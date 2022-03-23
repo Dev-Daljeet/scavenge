@@ -7,6 +7,7 @@ export interface RpcStatus {
     message?: string;
     details?: ProtobufAny[];
 }
+export declare type ScavengeMsgCommitSolutionResponse = object;
 export declare type ScavengeMsgSubmitScavengeResponse = object;
 /**
  * Params defines the parameters for the module.

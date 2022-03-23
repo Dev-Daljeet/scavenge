@@ -154,6 +154,141 @@ export const MsgSubmitScavengeResponse = {
         return message;
     },
 };
+const baseMsgCommitSolution = {
+    creator: "",
+    solutionHash: "",
+    solutionScavengerHash: "",
+};
+export const MsgCommitSolution = {
+    encode(message, writer = Writer.create()) {
+        if (message.creator !== "") {
+            writer.uint32(10).string(message.creator);
+        }
+        if (message.solutionHash !== "") {
+            writer.uint32(18).string(message.solutionHash);
+        }
+        if (message.solutionScavengerHash !== "") {
+            writer.uint32(26).string(message.solutionScavengerHash);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseMsgCommitSolution };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.creator = reader.string();
+                    break;
+                case 2:
+                    message.solutionHash = reader.string();
+                    break;
+                case 3:
+                    message.solutionScavengerHash = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseMsgCommitSolution };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.solutionHash !== undefined && object.solutionHash !== null) {
+            message.solutionHash = String(object.solutionHash);
+        }
+        else {
+            message.solutionHash = "";
+        }
+        if (object.solutionScavengerHash !== undefined &&
+            object.solutionScavengerHash !== null) {
+            message.solutionScavengerHash = String(object.solutionScavengerHash);
+        }
+        else {
+            message.solutionScavengerHash = "";
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.creator !== undefined && (obj.creator = message.creator);
+        message.solutionHash !== undefined &&
+            (obj.solutionHash = message.solutionHash);
+        message.solutionScavengerHash !== undefined &&
+            (obj.solutionScavengerHash = message.solutionScavengerHash);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseMsgCommitSolution };
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = "";
+        }
+        if (object.solutionHash !== undefined && object.solutionHash !== null) {
+            message.solutionHash = object.solutionHash;
+        }
+        else {
+            message.solutionHash = "";
+        }
+        if (object.solutionScavengerHash !== undefined &&
+            object.solutionScavengerHash !== null) {
+            message.solutionScavengerHash = object.solutionScavengerHash;
+        }
+        else {
+            message.solutionScavengerHash = "";
+        }
+        return message;
+    },
+};
+const baseMsgCommitSolutionResponse = {};
+export const MsgCommitSolutionResponse = {
+    encode(_, writer = Writer.create()) {
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = {
+            ...baseMsgCommitSolutionResponse,
+        };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(_) {
+        const message = {
+            ...baseMsgCommitSolutionResponse,
+        };
+        return message;
+    },
+    toJSON(_) {
+        const obj = {};
+        return obj;
+    },
+    fromPartial(_) {
+        const message = {
+            ...baseMsgCommitSolutionResponse,
+        };
+        return message;
+    },
+};
 export class MsgClientImpl {
     constructor(rpc) {
         this.rpc = rpc;
@@ -162,5 +297,10 @@ export class MsgClientImpl {
         const data = MsgSubmitScavenge.encode(request).finish();
         const promise = this.rpc.request("devdaljeet.scavenge.scavenge.Msg", "SubmitScavenge", data);
         return promise.then((data) => MsgSubmitScavengeResponse.decode(new Reader(data)));
+    }
+    CommitSolution(request) {
+        const data = MsgCommitSolution.encode(request).finish();
+        const promise = this.rpc.request("devdaljeet.scavenge.scavenge.Msg", "CommitSolution", data);
+        return promise.then((data) => MsgCommitSolutionResponse.decode(new Reader(data)));
     }
 }
