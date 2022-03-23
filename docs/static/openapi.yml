@@ -19797,6 +19797,8 @@ definitions:
       response type.
   devdaljeet.scavenge.scavenge.MsgCommitSolutionResponse:
     type: object
+  devdaljeet.scavenge.scavenge.MsgRevealSolutionResponse:
+    type: object
   devdaljeet.scavenge.scavenge.MsgSubmitScavengeResponse:
     type: object
   devdaljeet.scavenge.scavenge.Params:

@@ -15,6 +15,12 @@ export interface MsgCommitSolution {
 }
 export interface MsgCommitSolutionResponse {
 }
+export interface MsgRevealSolution {
+    creator: string;
+    solution: string;
+}
+export interface MsgRevealSolutionResponse {
+}
 export declare const MsgSubmitScavenge: {
     encode(message: MsgSubmitScavenge, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgSubmitScavenge;
@@ -43,17 +49,33 @@ export declare const MsgCommitSolutionResponse: {
     toJSON(_: MsgCommitSolutionResponse): unknown;
     fromPartial(_: DeepPartial<MsgCommitSolutionResponse>): MsgCommitSolutionResponse;
 };
+export declare const MsgRevealSolution: {
+    encode(message: MsgRevealSolution, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRevealSolution;
+    fromJSON(object: any): MsgRevealSolution;
+    toJSON(message: MsgRevealSolution): unknown;
+    fromPartial(object: DeepPartial<MsgRevealSolution>): MsgRevealSolution;
+};
+export declare const MsgRevealSolutionResponse: {
+    encode(_: MsgRevealSolutionResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgRevealSolutionResponse;
+    fromJSON(_: any): MsgRevealSolutionResponse;
+    toJSON(_: MsgRevealSolutionResponse): unknown;
+    fromPartial(_: DeepPartial<MsgRevealSolutionResponse>): MsgRevealSolutionResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     SubmitScavenge(request: MsgSubmitScavenge): Promise<MsgSubmitScavengeResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     CommitSolution(request: MsgCommitSolution): Promise<MsgCommitSolutionResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    RevealSolution(request: MsgRevealSolution): Promise<MsgRevealSolutionResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
     constructor(rpc: Rpc);
     SubmitScavenge(request: MsgSubmitScavenge): Promise<MsgSubmitScavengeResponse>;
     CommitSolution(request: MsgCommitSolution): Promise<MsgCommitSolutionResponse>;
+    RevealSolution(request: MsgRevealSolution): Promise<MsgRevealSolutionResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
