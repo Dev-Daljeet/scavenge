@@ -20,6 +20,12 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export interface ScavengeCommit {
+  index?: string;
+  solutionHash?: string;
+  solutionScavengerHash?: string;
+}
+
 export type ScavengeMsgCommitSolutionResponse = object;
 
 export type ScavengeMsgRevealSolutionResponse = object;
@@ -31,12 +37,122 @@ export type ScavengeMsgSubmitScavengeResponse = object;
  */
 export type ScavengeParams = object;
 
+export interface ScavengeQueryAllCommitResponse {
+  commit?: ScavengeCommit[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface ScavengeQueryAllScavengeResponse {
+  scavenge?: ScavengeScavenge[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface ScavengeQueryGetCommitResponse {
+  commit?: ScavengeCommit;
+}
+
+export interface ScavengeQueryGetScavengeResponse {
+  scavenge?: ScavengeScavenge;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface ScavengeQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: ScavengeParams;
+}
+
+export interface ScavengeScavenge {
+  index?: string;
+  solutionHash?: string;
+  solution?: string;
+  description?: string;
+  reward?: string;
+  scavenger?: string;
+}
+
+/**
+* message SomeRequest {
+         Foo some_parameter = 1;
+         PageRequest pagination = 2;
+ }
+*/
+export interface V1Beta1PageRequest {
+  /**
+   * key is a value returned in PageResponse.next_key to begin
+   * querying the next page most efficiently. Only one of offset or key
+   * should be set.
+   * @format byte
+   */
+  key?: string;
+
+  /**
+   * offset is a numeric offset that can be used when key is unavailable.
+   * It is less efficient than using key. Only one of offset or key should
+   * be set.
+   * @format uint64
+   */
+  offset?: string;
+
+  /**
+   * limit is the total number of results to be returned in the result page.
+   * If left empty it will default to a value to be set by each app.
+   * @format uint64
+   */
+  limit?: string;
+
+  /**
+   * count_total is set to true  to indicate that the result set should include
+   * a count of the total number of items available for pagination in UIs.
+   * count_total is only respected when offset is used. It is ignored when key
+   * is set.
+   */
+  countTotal?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
+}
+
+/**
+* PageResponse is to be embedded in gRPC response messages where the
+corresponding request message has used PageRequest.
+
+ message SomeResponse {
+         repeated Bar results = 1;
+         PageResponse page = 2;
+ }
+*/
+export interface V1Beta1PageResponse {
+  /** @format byte */
+  nextKey?: string;
+
+  /** @format uint64 */
+  total?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -231,10 +347,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title scavenge/genesis.proto
+ * @title scavenge/commit.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCommitAll
+   * @summary Queries a list of Commit items.
+   * @request GET:/devdaljeet/scavenge/scavenge/commit
+   */
+  queryCommitAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ScavengeQueryAllCommitResponse, RpcStatus>({
+      path: `/devdaljeet/scavenge/scavenge/commit`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCommit
+   * @summary Queries a Commit by index.
+   * @request GET:/devdaljeet/scavenge/scavenge/commit/{index}
+   */
+  queryCommit = (index: string, params: RequestParams = {}) =>
+    this.request<ScavengeQueryGetCommitResponse, RpcStatus>({
+      path: `/devdaljeet/scavenge/scavenge/commit/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -246,6 +404,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<ScavengeQueryParamsResponse, RpcStatus>({
       path: `/devdaljeet/scavenge/scavenge/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryScavengeAll
+   * @summary Queries a list of Scavenge items.
+   * @request GET:/devdaljeet/scavenge/scavenge/scavenge
+   */
+  queryScavengeAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ScavengeQueryAllScavengeResponse, RpcStatus>({
+      path: `/devdaljeet/scavenge/scavenge/scavenge`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryScavenge
+   * @summary Queries a Scavenge by index.
+   * @request GET:/devdaljeet/scavenge/scavenge/scavenge/{index}
+   */
+  queryScavenge = (index: string, params: RequestParams = {}) =>
+    this.request<ScavengeQueryGetScavengeResponse, RpcStatus>({
+      path: `/devdaljeet/scavenge/scavenge/scavenge/${index}`,
       method: "GET",
       format: "json",
       ...params,

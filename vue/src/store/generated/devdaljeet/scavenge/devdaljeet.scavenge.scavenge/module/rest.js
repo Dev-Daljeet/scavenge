@@ -130,12 +130,41 @@ export class HttpClient {
     }
 }
 /**
- * @title scavenge/genesis.proto
+ * @title scavenge/commit.proto
  * @version version not set
  */
 export class Api extends HttpClient {
     constructor() {
         super(...arguments);
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryCommitAll
+         * @summary Queries a list of Commit items.
+         * @request GET:/devdaljeet/scavenge/scavenge/commit
+         */
+        this.queryCommitAll = (query, params = {}) => this.request({
+            path: `/devdaljeet/scavenge/scavenge/commit`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryCommit
+         * @summary Queries a Commit by index.
+         * @request GET:/devdaljeet/scavenge/scavenge/commit/{index}
+         */
+        this.queryCommit = (index, params = {}) => this.request({
+            path: `/devdaljeet/scavenge/scavenge/commit/${index}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
         /**
          * No description
          *
@@ -146,6 +175,35 @@ export class Api extends HttpClient {
          */
         this.queryParams = (params = {}) => this.request({
             path: `/devdaljeet/scavenge/scavenge/params`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryScavengeAll
+         * @summary Queries a list of Scavenge items.
+         * @request GET:/devdaljeet/scavenge/scavenge/scavenge
+         */
+        this.queryScavengeAll = (query, params = {}) => this.request({
+            path: `/devdaljeet/scavenge/scavenge/scavenge`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryScavenge
+         * @summary Queries a Scavenge by index.
+         * @request GET:/devdaljeet/scavenge/scavenge/scavenge/{index}
+         */
+        this.queryScavenge = (index, params = {}) => this.request({
+            path: `/devdaljeet/scavenge/scavenge/scavenge/${index}`,
             method: "GET",
             format: "json",
             ...params,

@@ -3,12 +3,12 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgCommitSolution } from "./types/scavenge/tx";
-import { MsgSubmitScavenge } from "./types/scavenge/tx";
 import { MsgRevealSolution } from "./types/scavenge/tx";
+import { MsgSubmitScavenge } from "./types/scavenge/tx";
 const types = [
     ["/devdaljeet.scavenge.scavenge.MsgCommitSolution", MsgCommitSolution],
-    ["/devdaljeet.scavenge.scavenge.MsgSubmitScavenge", MsgSubmitScavenge],
     ["/devdaljeet.scavenge.scavenge.MsgRevealSolution", MsgRevealSolution],
+    ["/devdaljeet.scavenge.scavenge.MsgSubmitScavenge", MsgSubmitScavenge],
 ];
 export const MissingWalletError = new Error("wallet is required");
 export const registry = new Registry(types);
@@ -30,8 +30,8 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     return {
         signAndBroadcast: (msgs, { fee, memo } = { fee: defaultFee, memo: "" }) => client.signAndBroadcast(address, msgs, fee, memo),
         msgCommitSolution: (data) => ({ typeUrl: "/devdaljeet.scavenge.scavenge.MsgCommitSolution", value: MsgCommitSolution.fromPartial(data) }),
-        msgSubmitScavenge: (data) => ({ typeUrl: "/devdaljeet.scavenge.scavenge.MsgSubmitScavenge", value: MsgSubmitScavenge.fromPartial(data) }),
         msgRevealSolution: (data) => ({ typeUrl: "/devdaljeet.scavenge.scavenge.MsgRevealSolution", value: MsgRevealSolution.fromPartial(data) }),
+        msgSubmitScavenge: (data) => ({ typeUrl: "/devdaljeet.scavenge.scavenge.MsgSubmitScavenge", value: MsgSubmitScavenge.fromPartial(data) }),
     };
 };
 const queryClient = async ({ addr: addr } = { addr: "http://localhost:1317" }) => {

@@ -3,6 +3,8 @@ package devdaljeet.scavenge.scavenge;
 
 import "gogoproto/gogo.proto";
 import "scavenge/params.proto";
+import "scavenge/scavenge.proto";
+import "scavenge/commit.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/devdaljeet/scavenge/x/scavenge/types";
@@ -10,5 +12,7 @@ option go_package = "github.com/devdaljeet/scavenge/x/scavenge/types";
 // GenesisState defines the scavenge module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Scavenge scavengeList = 2 [(gogoproto.nullable) = false];
+  repeated Commit commitList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

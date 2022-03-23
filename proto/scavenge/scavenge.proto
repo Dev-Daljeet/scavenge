@@ -1,0 +1,15 @@
+syntax = "proto3";
+package devdaljeet.scavenge.scavenge;
+
+option go_package = "github.com/devdaljeet/scavenge/x/scavenge/types";
+
+message Scavenge {
+  string index = 1; 
+  string solutionHash = 2; 
+  string solution = 3; 
+  string description = 4; 
+  string reward = 5; 
+  string scavenger = 6; 
+  
+}
+
