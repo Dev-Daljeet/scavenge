@@ -3,7 +3,6 @@ package cli
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	//"strconv"
 
 	"github.com/spf13/cobra"
 
